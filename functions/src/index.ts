@@ -1,5 +1,13 @@
 import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
 
-export const helloWorld = functions.https.onCall((data, context) => {
+admin.initializeApp();
+
+const firestoreDB = admin.firestore();
+
+export const helloWorld = functions.https.onCall(async (data, context) => {
+  await firestoreDB.collection('foo').doc('bar').set({
+    test: `this is a test`,
+  });
   return { text: 'Hello from Firebase!' };
 });
